@@ -50,3 +50,20 @@ input {
   display: inline-block;
   margin-top: 20px;
 }
+
+#root-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  cursor: pointer;
+  color: #dea300;
+}
+
+#root-link:hover {
+  text-decoration: underline;
+}
+
+#root-link img {
+  width: 150px;
+  display: block;
+}

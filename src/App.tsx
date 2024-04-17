@@ -9,6 +9,19 @@ const WIDTH = 460;
 const HEIGHT = 280;
 
 function App() {
+  return <>
+    <RootLink />
+    <CheeseApp />
+    </>
+}
+
+function RootLink() {
+  return <>
+    <a id="root-link" href="https://cheesed.me"><img src="/logo.jpg" />$cheese on Solana</a>
+    </>
+}
+
+function CheeseApp() {
   const [isConnected, setConnected] = useState(false);
   let [tokenBalance, setTokenBalance] = useState<number | null>(null);
   let [username, setUsername] = useState<string | null>(null);
