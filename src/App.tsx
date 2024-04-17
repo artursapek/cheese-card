@@ -22,6 +22,7 @@ function RootLink() {
 }
 
 function CheeseApp() {
+  const [isLoading, setLoading] = useState(true);
   const [isConnected, setConnected] = useState(false);
   let [tokenBalance, setTokenBalance] = useState<number | null>(null);
   let [username, setUsername] = useState<string | null>(null);
@@ -40,6 +41,8 @@ function CheeseApp() {
     let { value } = await connection.getTokenAccountBalance(tokenAccount);
     /* @ts-ignore */
     setTokenBalance(value.amount / 1e6);
+
+    setLoading(false);
   };
 
   const connectWallet = () => {
@@ -181,6 +184,11 @@ function CheeseApp() {
       <button id="connect-wallet" onClick={connectWallet} >Connect Wallet</button>
       </>
     );
+
+  } else if (isLoading) {
+
+    return <div>Loading...</div>
+
   } else if (!tokenBalance) {
 
     return <div>
