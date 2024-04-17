@@ -21,3 +21,22 @@ input {
   margin-top: 20px;
   color: black;
 }
+
+#buy {
+  font-size: 69px;
+  color: #fcba03;
+}
+#buy:hover {
+  text-decoration: underline;
+}
+
+
+#connect-wallet {
+  background-color: #fcba03;
+  font-size: 69px;
+  padding: 20px;
+}
+
+#connect-wallet:hover {
+  background-color: #ffcc3d;
+}

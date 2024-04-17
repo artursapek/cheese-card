@@ -42,7 +42,6 @@ function App() {
   useEffect(() => {
     let canvas: HTMLCanvasElement = document.querySelector('#card canvas')!;
 
-    console.log(canvas);
     if (canvas && tokenBalance !== null) {
 
 
@@ -62,7 +61,6 @@ function App() {
         
         ctx.clearRect(0,0,WIDTH,HEIGHT);
 
-        console.log(ctx);
         ctx.strokeStyle = 'black';
 
         let roundedCheeseValue = '';
@@ -132,9 +130,19 @@ function App() {
 
   if (!isConnected) {
     return (
-      <button onClick={connectWallet} >Connect Wallet</button>
+      <>
+      <h1>GOT $CHEESE?</h1>
+      <button id="connect-wallet" onClick={connectWallet} >Connect Wallet</button>
+      </>
     );
-  } else if (tokenBalance != null) { 
+  } else if (!tokenBalance) {
+
+    return <div>
+      <h1>NO $CHEESE DETECTED</h1>
+      <a target="_blank" id="buy" href="https://jup.ag/swap/SOL-AbrMJWfDVRZ2EWCQ1xSCpoVeVgZNpq1U2AoYG98oRXfn">BUY $CHEESE</a>
+      </div>
+
+  } else if (tokenBalance != null && tokenBalance > 0) { 
     return (
       <div id="card-maker">
         <div id="card">
