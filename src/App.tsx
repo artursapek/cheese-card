@@ -147,7 +147,7 @@ function App() {
       link.href = img;
       link.click();
     };
-    bg.src = `/bannerbg_${Math.ceil(Math.random()*2)}.png`;
+    bg.src = `/bannerbg_${Math.ceil(Math.random()*3)}.png`;
 
   }
 
