@@ -127,12 +127,12 @@ function App() {
   };
 
   const downloadBanner = (e: any) => {
+    e.preventDefault();
     let bg = new Image();
     bg.onload = () => {
 
       let canvas: HTMLCanvasElement = document.querySelector('canvas')!;
       let bannerCanvas: HTMLCanvasElement = document.createElement('canvas');
-      const ratio = devicePixelRatio;
       bannerCanvas.style.width = '1500px';
       bannerCanvas.style.height = '500px';
       bannerCanvas.width = 1500;
