@@ -43,8 +43,6 @@ function App() {
     let canvas: HTMLCanvasElement = document.querySelector('#card canvas')!;
 
     if (canvas && tokenBalance !== null) {
-
-
       let bg = new Image();
       bg.onload = () => {
 
@@ -128,6 +126,31 @@ function App() {
     link.click();
   };
 
+  const downloadBanner = (e: any) => {
+    let bg = new Image();
+    bg.onload = () => {
+
+      let canvas: HTMLCanvasElement = document.querySelector('canvas')!;
+      let bannerCanvas: HTMLCanvasElement = document.createElement('canvas');
+      const ratio = devicePixelRatio;
+      bannerCanvas.style.width = '1500px';
+      bannerCanvas.style.height = '500px';
+      bannerCanvas.width = 1500;
+      bannerCanvas.height = 500;
+      let ctx = bannerCanvas.getContext('2d')!;
+      ctx.drawImage(bg, 0, 0, 1500, 500);
+      ctx.drawImage(canvas, 800, 50, WIDTH*1.4, HEIGHT*1.4);
+
+      var img = bannerCanvas.toDataURL('image/png');
+      let link = document.createElement('a');
+      link.download = 'CHEESE_BANNER.PNG';
+      link.href = img;
+      link.click();
+    };
+    bg.src = `/bannerbg_${Math.ceil(Math.random()*2)}.png`;
+
+  }
+
   useEffect(() => {
     if ('solana' in window) {
       /* @ts-ignore */
@@ -192,7 +215,11 @@ function App() {
           <br />
 
           { (username && pfp) ? 
-            <a href="#" id="download" onClick={download}>DOWNLOAD CARD</a>
+            <>
+              <a href="#" className="download" onClick={download}>DOWNLOAD CARD</a>
+              <br />
+              <a href="#" className="download" onClick={downloadBanner}>DOWNLOAD TWITTER BANNER</a>
+            </>
             : null}
         </div>
       </div>

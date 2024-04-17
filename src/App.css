@@ -38,12 +38,12 @@ input {
   border-radius: 10px;
 }
 
-#connect-wallet:hover, #buy:hover, #download:hover {
+#connect-wallet:hover, #buy:hover, .download:hover {
   color: white;
   background-color: #ffcc3d;
 }
 
-#download {
+.download {
   background-color: #fcba03;
   padding: 5px;
   color: white;
