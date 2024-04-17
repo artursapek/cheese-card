@@ -6,5 +6,18 @@
 }
 
 
-#card {
+#card-maker {
+  display: flex;
+}
+
+#inputs {
+  margin-left: 50px;
+}
+
+input {
+  background: white;
+  border: 2px solid #fcba03;
+  padding: 10px;
+  margin-top: 20px;
+  color: black;
 }

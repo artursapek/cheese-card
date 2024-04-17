@@ -11,7 +11,9 @@ const HEIGHT = 280;
 
 function App() {
   const [isConnected, setConnected] = useState(false);
-  const [tokenBalance, setTokenBalance] = useState<number | null>(null);
+  let [tokenBalance, setTokenBalance] = useState<number | null>(null);
+  let [username, setUsername] = useState<string | null>(null);
+  let [pfp, setPfp] = useState(null);
 
   const handleWalletConnect = async () => {
 
@@ -38,58 +40,84 @@ function App() {
   };
 
   useEffect(() => {
-    let canvas = document.getElementById('card');
+    let canvas = document.querySelector('#card canvas');
+
     console.log(canvas);
-    if (canvas) {
-      const ctx = canvas.getContext('2d');
-      const ratio = devicePixelRatio;
+    if (canvas && tokenBalance !== null) {
 
-      canvas.style.width = `${WIDTH}px`;
-      canvas.width = WIDTH * ratio;
 
-      canvas.style.height = `${HEIGHT}px`;
-      canvas.height = HEIGHT * ratio;
+      let bg = new Image();
+      bg.onload = () => {
 
-      ctx.scale(devicePixelRatio, devicePixelRatio);
-      
-      ctx.clearRect(0,0,WIDTH,HEIGHT);
+        const ctx = canvas.getContext('2d');
+        const ratio = devicePixelRatio;
 
-      console.log(ctx);
-      ctx.strokeStyle = 'black';
+        canvas.style.width = `${WIDTH}px`;
+        canvas.width = WIDTH * ratio;
 
-      const MARGIN = 5;
+        canvas.style.height = `${HEIGHT}px`;
+        canvas.height = HEIGHT * ratio;
 
-      let roundedCheeseValue = '';
+        ctx.scale(devicePixelRatio, devicePixelRatio);
+        
+        ctx.clearRect(0,0,WIDTH,HEIGHT);
 
-      if (tokenBalance > 1e6) {
-        // Millions
-        roundedCheeseValue = Math.floor(tokenBalance / 1e6) + 'M';
-      } else if (tokenBalance > 1e3) {
-        // Thousands
-        roundedCheeseValue = Math.floor(tokenBalance / 1e3) + 'M';
-      } else {
-        // Singles
-        roundedCheeseValue = tokenBalance;
+        console.log(ctx);
+        ctx.strokeStyle = 'black';
+
+        let roundedCheeseValue = '';
+        let header = '';
+
+        //tokenBalance = 403302;
+
+        if (tokenBalance > 1e6) {
+          // Millions
+          roundedCheeseValue = Math.floor(tokenBalance / 1e6) + 'M';
+          header = 'CERTIFIED $CHEESEILLIONAIRE';
+        } else if (tokenBalance > 1e3) {
+          // Thousands
+          roundedCheeseValue = Math.floor(tokenBalance / 1e3) + 'K';
+          header = 'STACKING $CHEESE LIKE HOMER';
+        } else {
+          // Singles
+          roundedCheeseValue = tokenBalance;
+          header = 'STACKING $CHEESE LIKE HOMER';
+        }
+
+
+        ctx.drawImage(bg, 0, 0, 660, 400);
+
+        ctx.shadowColor = '#a76f00';
+        ctx.shadowBlur=7;
+
+        ctx.textAlign = 'right';
+        ctx.font = 'bold italic 24px Arial';
+        ctx.fillStyle = 'white';
+        ctx.fillText( 'VERIFIED HOLDER', WIDTH - 14.5, 100);
+        ctx.font = 'bold italic 32px Arial';
+        ctx.fillText( roundedCheeseValue + ' $CHEESE', WIDTH - 14.5, 150);
+        ctx.font = 'bold italic 24px Arial';
+        ctx.fillText( 'AGING ON CHAIN', WIDTH - 14.5, 200);
+
+        ctx.font = 'italic bold 26px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillStyle = 'white';
+        ctx.fillText( header, WIDTH/2, 36.5);
+
+        if (username) {
+          ctx.textAlign = 'left';
+          ctx.fillText( username, 20, HEIGHT-20);
+        }
+
+
+        if (pfp) {
+          ctx.drawImage(pfp, 20, 70, 160, 160);
+        }
       }
 
-      ctx.beginPath();
-      ctx.roundRect(0.5 + MARGIN, 0.5 + MARGIN, WIDTH - MARGIN*2, 30, 10);
-      ctx.rect(0.5 + MARGIN, 10.5, WIDTH - MARGIN*2, 40, 10);
-      ctx.fillStyle = CHEESE_COLOR;
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.roundRect(0.5 + MARGIN, 0.5 + MARGIN, WIDTH - MARGIN*2, HEIGHT - MARGIN*2, 10);
-      ctx.stroke();
-
-      ctx.font = '36px Arial';
-      ctx.fillStyle = 'black';
-      ctx.fillText( roundedCheeseValue + ' $CHEESE', 20.5, HEIGHT - 20.5 );
-
-      ctx.font = 'italic bold 24px Arial';
-      ctx.fillStyle = 'white';
-      ctx.fillText( '$CHEESE CLUB MEMBERSHIP CARD', 14.5, 36.5);
+      bg.src = '/public/cheesebg.png';
     }
+
   });
 
   useEffect(() => {
@@ -108,7 +136,42 @@ function App() {
     );
   } else if (tokenBalance != null) { 
     return (
-      <canvas id="card" />
+      <div id="card-maker">
+        <div id="card">
+          <canvas id="card" />
+        </div>
+
+        <div id="inputs">
+          <input type="file" accept="image/*" id="imagePicker" onChange={
+            (e) => {
+              console.log(e);
+
+              const file = event.target.files[0]; // Get the file from the input
+              if (file) {
+
+                  const reader = new FileReader();
+                  reader.onload = function(e) {
+                      console.log(e);
+                      const img = new Image(); // Create a new image
+                      img.onload = function() {
+                        setPfp(img);
+                      };
+                    img.src = e.target.result;
+                  };
+
+                console.log(file);
+
+                  reader.readAsDataURL(file); // Read the file as a data URL (base64)
+              }
+
+            }
+          }/>
+          <br />
+          <input type="text" placeholder="@name" value={username || ''} onChange={(e) => {
+            setUsername(e.target.value);
+          }}/>
+        </div>
+      </div>
     )
   }
 }
