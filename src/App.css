@@ -24,19 +24,21 @@ input {
 
 #buy {
   font-size: 69px;
-  color: #fcba03;
 }
 #buy:hover {
   text-decoration: underline;
 }
 
 
-#connect-wallet {
+#connect-wallet, #buy {
+  color: white;
   background-color: #fcba03;
   font-size: 69px;
   padding: 20px;
+  border-radius: 10px;
 }
 
-#connect-wallet:hover {
+#connect-wallet:hover, #buy:hover {
+  color: white;
   background-color: #ffcc3d;
 }
