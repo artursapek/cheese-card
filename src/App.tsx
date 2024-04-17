@@ -4,7 +4,6 @@ import './App.css'
 import {getAssociatedTokenAddress} from '@solana/spl-token';
 
 const CHEESE = new PublicKey('AbrMJWfDVRZ2EWCQ1xSCpoVeVgZNpq1U2AoYG98oRXfn');
-const CHEESE_COLOR = '#fcba03';
 
 const WIDTH = 460;
 const HEIGHT = 280;
@@ -13,7 +12,7 @@ function App() {
   const [isConnected, setConnected] = useState(false);
   let [tokenBalance, setTokenBalance] = useState<number | null>(null);
   let [username, setUsername] = useState<string | null>(null);
-  let [pfp, setPfp] = useState(null);
+  let [pfp, setPfp] = useState<HTMLImageElement | null>(null);
 
   const handleWalletConnect = async () => {
 
@@ -26,6 +25,7 @@ function App() {
     const tokenAccount = await getAssociatedTokenAddress(CHEESE, walletPublicKey);
 
     let { value } = await connection.getTokenAccountBalance(tokenAccount);
+    /* @ts-ignore */
     setTokenBalance(value.amount / 1e6);
   };
 
@@ -40,7 +40,7 @@ function App() {
   };
 
   useEffect(() => {
-    let canvas = document.querySelector('#card canvas');
+    let canvas: HTMLCanvasElement = document.querySelector('#card canvas')!;
 
     console.log(canvas);
     if (canvas && tokenBalance !== null) {
@@ -49,7 +49,7 @@ function App() {
       let bg = new Image();
       bg.onload = () => {
 
-        const ctx = canvas.getContext('2d');
+        const ctx: CanvasRenderingContext2D = canvas.getContext('2d')!;
         const ratio = devicePixelRatio;
 
         canvas.style.width = `${WIDTH}px`;
@@ -80,7 +80,7 @@ function App() {
           header = 'STACKING $CHEESE LIKE HOMER';
         } else {
           // Singles
-          roundedCheeseValue = tokenBalance;
+          roundedCheeseValue = '' + tokenBalance;
           header = 'STACKING $CHEESE LIKE HOMER';
         }
 
@@ -143,19 +143,20 @@ function App() {
 
         <div id="inputs">
           <input type="file" accept="image/*" id="imagePicker" onChange={
-            (e) => {
+            (e: any) => {
               console.log(e);
 
-              const file = event.target.files[0]; // Get the file from the input
+              const file = e.target.files[0]; // Get the file from the input
               if (file) {
 
                   const reader = new FileReader();
                   reader.onload = function(e) {
-                      console.log(e);
-                      const img = new Image(); // Create a new image
-                      img.onload = function() {
-                        setPfp(img);
-                      };
+                    console.log(e);
+                    const img = new Image(); // Create a new image
+                    img.onload = function() {
+                      setPfp(img);
+                    };
+                    /* @ts-ignore */
                     img.src = e.target.result;
                   };
 
