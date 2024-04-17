@@ -115,7 +115,7 @@ function App() {
         }
       }
 
-      bg.src = '/public/cheesebg.png';
+      bg.src = '/cheesebg.png';
     }
 
   });
