@@ -118,6 +118,16 @@ function App() {
 
   });
 
+  const download = (e: any) => {
+    e.preventDefault();
+    let canvas: HTMLCanvasElement = document.querySelector('canvas')!;
+    var img = canvas.toDataURL('image/png');
+    let link = document.createElement('a');
+    link.download = 'PROOF_OF_CHEESE.PNG';
+    link.href = img;
+    link.click();
+  };
+
   useEffect(() => {
     if ('solana' in window) {
       /* @ts-ignore */
@@ -179,6 +189,11 @@ function App() {
           <input type="text" placeholder="@name" value={username || ''} onChange={(e) => {
             setUsername(e.target.value);
           }}/>
+          <br />
+
+          { (username && pfp) ? 
+            <a href="#" id="download" onClick={download}>DOWNLOAD CARD</a>
+            : null}
         </div>
       </div>
     )

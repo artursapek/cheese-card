@@ -38,7 +38,15 @@ input {
   border-radius: 10px;
 }
 
-#connect-wallet:hover, #buy:hover {
+#connect-wallet:hover, #buy:hover, #download:hover {
   color: white;
   background-color: #ffcc3d;
+}
+
+#download {
+  background-color: #fcba03;
+  padding: 5px;
+  color: white;
+  display: inline-block;
+  margin-top: 20px;
 }
