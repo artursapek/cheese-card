@@ -12,6 +12,7 @@ function App() {
   return <>
     <RootLink />
     <CheeseApp />
+    <Footer />
     </>
 }
 
@@ -19,6 +20,12 @@ function RootLink() {
   return <>
     <a id="root-link" href="https://cheesed.me"><img src="/logo.jpg" />$cheese on Solana</a>
     </>
+}
+
+function Footer() {
+  return <footer>
+    <a target="_blank" href="https://dexscreener.com/solana/c4zht1fptb6clcukivhnnntxbfxyojq6x8hezpuexqvr">{CHEESE.toString()}</a>
+  </footer>
 }
 
 function CheeseApp() {
@@ -111,6 +118,9 @@ function CheeseApp() {
         ctx.font = 'bold italic 24px Arial';
         ctx.fillText( 'AGING ON CHAIN', WIDTH - 14.5, 200);
 
+        ctx.font = 'bold italic 16px Arial';
+        ctx.fillText( 'PROOFOFCHEESE.COM', WIDTH - 14.5, 260);
+
         ctx.font = 'italic bold 26px Arial';
         ctx.textAlign = 'center';
         ctx.fillStyle = 'white';
@@ -124,6 +134,12 @@ function CheeseApp() {
 
         if (pfp) {
           ctx.drawImage(pfp, 20, 70, 160, 160);
+        } else {
+          ctx.strokeStyle = 'white';
+          ctx.strokeRect(20, 70, 160, 160);
+          ctx.font = '18px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('Upload image', 100, 155);
         }
       }
 
@@ -204,6 +220,7 @@ function CheeseApp() {
         </div>
 
         <div id="inputs">
+          <h3>Create your cheese card</h3>
           <input type="file" accept="image/*" id="imagePicker" onChange={
             (e: any) => {
               console.log(e);
@@ -238,8 +255,10 @@ function CheeseApp() {
           { (username && pfp) ? 
             <>
               <a href="#" className="download" onClick={download}>DOWNLOAD CARD</a>
-              <br />
               <a href="#" className="download" onClick={downloadBanner}>DOWNLOAD TWITTER BANNER</a>
+              <br />
+              <a className="share" target="_blank" href="https://t.me/sliceocheese">Share it in Telegram!</a>
+              <a className="share" target="_blank" href="https://twitter.com/intent/post?text=my%20proof%20of%20cheese%20@dacheeseslice">Share it on Twitter!</a>
             </>
             : null}
         </div>
