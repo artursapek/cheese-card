@@ -5,6 +5,8 @@ import {getAssociatedTokenAddress} from '@solana/spl-token';
 
 const CHEESE = new PublicKey('AbrMJWfDVRZ2EWCQ1xSCpoVeVgZNpq1U2AoYG98oRXfn');
 
+const JUPITER_URL = 'https://jup.ag/swap/SOL-' + CHEESE;
+
 const WIDTH = 460;
 const HEIGHT = 280;
 
@@ -29,6 +31,8 @@ function Footer() {
 }
 
 function CheeseApp() {
+  const [hasSolana, setHasSolana] = useState(false);
+  const [isInitialized, setInitialized] = useState(false);
   const [isLoading, setLoading] = useState(true);
   const [isConnected, setConnected] = useState(false);
   let [tokenBalance, setTokenBalance] = useState<number | null>(null);
@@ -52,6 +56,7 @@ function CheeseApp() {
         setTokenBalance(resp.value.amount / 1e6);
       }
     } catch (e) {
+      setTokenBalance(null);
     }
     setLoading(false);
   };
@@ -189,15 +194,34 @@ function CheeseApp() {
 
   useEffect(() => {
     if ('solana' in window) {
+      setHasSolana(true);
       /* @ts-ignore */
-      window.solana.connect({ onlyIfTrusted: true }). then(() => {
+      window.solana.connect({ onlyIfTrusted: true }).then(() => {
         handleWalletConnect();
         setConnected(true);
+        setInitialized(true);
+      }).catch((e: any) => {
+        console.log(e);
+        setInitialized(true);
       });
+
+      /* @ts-ignore */
+      window.solana.on('accountChanged', (pk: PublicKey) => {
+        handleWalletConnect();
+      });
+    } else {
+      setHasSolana(false);
+      setInitialized(true);
     }
   }, []);
 
-  if (!isConnected) {
+  if (!isInitialized) {
+    return null
+
+  } else if (!hasSolana) {
+    return <div>No Solana wallet detected. <a target="_blank" href="https://phantom.app/">Install Phantom</a> and then <a target="_blank" href={JUPITER_URL}>buy $cheese</a>!</div>
+
+  } else if (!isConnected) {
     return (
       <>
       <h1>GOT $CHEESE?</h1>
@@ -213,7 +237,7 @@ function CheeseApp() {
 
     return <div>
       <h1>NO $CHEESE DETECTED</h1>
-      <a target="_blank" id="buy" href="https://jup.ag/swap/SOL-AbrMJWfDVRZ2EWCQ1xSCpoVeVgZNpq1U2AoYG98oRXfn">BUY $CHEESE</a>
+      <a target="_blank" id="buy" href={JUPITER_URL}>BUY $CHEESE</a>
       </div>
 
   } else if (tokenBalance != null && tokenBalance > 0) { 
