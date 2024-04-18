@@ -45,10 +45,14 @@ function CheeseApp() {
 
     const tokenAccount = await getAssociatedTokenAddress(CHEESE, walletPublicKey);
 
-    let { value } = await connection.getTokenAccountBalance(tokenAccount);
-    /* @ts-ignore */
-    setTokenBalance(value.amount / 1e6);
-
+    try {
+      let resp = await connection.getTokenAccountBalance(tokenAccount);
+      if (resp) {
+        /* @ts-ignore */
+        setTokenBalance(resp.value.amount / 1e6);
+      }
+    } catch (e) {
+    }
     setLoading(false);
   };
 
