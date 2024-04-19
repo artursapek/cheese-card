@@ -193,21 +193,33 @@ function CheeseApp() {
   }
 
   useEffect(() => {
-    if ('solana' in window) {
-      setHasSolana(true);
+
+    const attemptToConnect = () => {
       /* @ts-ignore */
       window.solana.connect({ onlyIfTrusted: true }).then(() => {
         handleWalletConnect();
         setConnected(true);
         setInitialized(true);
-      }).catch((e: any) => {
-        console.log(e);
+      }).catch(() => {
+        setConnected(false);
         setInitialized(true);
       });
+    };
+
+    if ('solana' in window) {
+      setHasSolana(true);
+      /* @ts-ignore */
+      attemptToConnect();
 
       /* @ts-ignore */
       window.solana.on('accountChanged', (pk: PublicKey) => {
-        handleWalletConnect();
+        if (pk) {
+          setConnected(true);
+          handleWalletConnect();
+        } else {
+          setConnected(false);
+          attemptToConnect();
+        }
       });
     } else {
       setHasSolana(false);
