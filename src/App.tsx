@@ -196,8 +196,8 @@ function CheeseApp() {
 
     const attemptToConnect = () => {
       /* @ts-ignore */
-      window.solana.connect({ onlyIfTrusted: true }).then(() => {
-        handleWalletConnect();
+      window.solana.connect({ onlyIfTrusted: true }).then(async () => {
+        await handleWalletConnect();
         setConnected(true);
         setInitialized(true);
       }).catch(() => {
